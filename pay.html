@@ -22,15 +22,21 @@
     const p = new URLSearchParams(location.search);
     const f = document.getElementById('f');
     ['MerchantLogin','OutSum','InvId','Description','SignatureValue',
-     'Shp_count','Shp_uid','Receipt','IsTest'].forEach(k => {
+     'Shp_count','Shp_uid','IsTest'].forEach(k => {
       if (p.has(k)) {
         const i = document.createElement('input');
-        i.type = 'hidden';
-        i.name = k;
-        i.value = p.get(k);
+        i.type = 'hidden'; i.name = k; i.value = p.get(k);
         f.appendChild(i);
       }
     });
+    // Receipt отдельно — передаём сырой JSON без лишнего кодирования
+    if (p.has('Receipt')) {
+      const i = document.createElement('input');
+      i.type = 'hidden';
+      i.name = 'Receipt';
+      i.value = decodeURIComponent(p.get('Receipt'));
+      f.appendChild(i);
+    }
     setTimeout(() => f.submit(), 800);
   </script>
 </body>
