@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Переход к оплате...</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f4f8; }
+    .box { text-align: center; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.1); max-width: 320px; }
+    .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top: 4px solid #2196F3; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    p { color: #555; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="spinner"></div>
+    <p>Переходим к оплате...</p>
+  </div>
+  <form id="f" action="https://auth.robokassa.ru/Merchant/Index.aspx" method="POST"></form>
+  <script>
+    const p = new URLSearchParams(location.search);
+    const f = document.getElementById('f');
+    ['MerchantLogin','OutSum','InvId','Description','SignatureValue',
+     'Shp_count','Shp_uid','Receipt','IsTest'].forEach(k => {
+      if (p.has(k)) {
+        const i = document.createElement('input');
+        i.type = 'hidden';
+        i.name = k;
+        i.value = p.get(k);
+        f.appendChild(i);
+      }
+    });
+    setTimeout(() => f.submit(), 800);
+  </script>
+</body>
+</html>
